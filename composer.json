@@ -1,0 +1,6 @@
+{
+  "name": "j92/budgettool",
+  "autoload": {
+    "psr-4": {"": "src/"}
+  }
+}
