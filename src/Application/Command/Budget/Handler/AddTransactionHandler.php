@@ -25,7 +25,7 @@ class AddTransactionHandler implements CommandHandler
     public function handle(Command $command)
     {
         if (!$command instanceof AddTransactionCommand) {
-            throw new \InvalidArgumentException('CreateTransactionHandler can only handle CreateTransactionCommand');
+            throw new \InvalidArgumentException('CreateTransactionHandler can only handle AddTransactionCommand');
         }
 
         $transaction = new Transaction(uniqid(), $command->getAmount(), $command->getTransactionDate());
