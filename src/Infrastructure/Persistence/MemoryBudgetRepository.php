@@ -15,7 +15,5 @@ class MemoryBudgetRepository implements BudgetRepository
     public function create(Budget $budget)
     {
         $this->items[] = $budget;
-
-        echo "Post with id {$budget->id} was created.";
     }
 }
