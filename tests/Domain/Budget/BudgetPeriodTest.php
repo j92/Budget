@@ -15,4 +15,20 @@ class BudgetPeriodTest extends TestCase
         new BudgetPeriod(new \DateTime('tomorrow'), new \DateTime('now'));
         $this->fail('Start must appear before the end');
     }
+
+    public function testGetStart()
+    {
+        $start = new \DateTime('now');
+        $period = new BudgetPeriod($start, new \DateTime('tomorrow'));
+
+        $this->assertEquals($start, $period->getStart());
+    }
+
+    public function testGetEnd()
+    {
+        $end = new \DateTime('tomorrow');
+        $period = new BudgetPeriod(new \DateTime('now'), $end);
+
+        $this->assertEquals($end, $period->getEnd());
+    }
 }
