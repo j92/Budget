@@ -3,11 +3,10 @@
 namespace Application\Command\Budget;
 
 use Application\Command\Command;
-use Domain\Budget\Budget;
 use Domain\Budget\TransactionAmount;
 use Domain\Budget\TransactionDate;
 
-class CreateTransactionCommand implements Command
+class AddTransactionCommand implements Command
 {
     /** @var TransactionAmount */
     private $amount;

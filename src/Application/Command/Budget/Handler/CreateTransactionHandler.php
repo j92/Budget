@@ -2,7 +2,7 @@
 
 namespace Application\Command\Budget\Handler;
 
-use Application\Command\Budget\CreateTransactionCommand;
+use Application\Command\Budget\AddTransactionCommand;
 use Application\Command\Command;
 use Application\Command\CommandHandler;
 use Domain\Budget\Transaction;
@@ -24,7 +24,7 @@ class CreateTransactionHandler implements CommandHandler
 
     public function handle(Command $command)
     {
-        if (!$command instanceof CreateTransactionCommand) {
+        if (!$command instanceof AddTransactionCommand) {
             throw new \InvalidArgumentException('CreateTransactionHandler can only handle CreateTransactionCommand');
         }
 
