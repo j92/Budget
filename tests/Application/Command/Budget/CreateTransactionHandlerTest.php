@@ -3,7 +3,7 @@
 namespace Tests\Application\Command\Budget;
 
 use Application\Command\Budget\AddTransactionCommand;
-use Application\Command\Budget\Handler\CreateTransactionHandler;
+use Application\Command\Budget\Handler\AddTransactionHandler;
 use Domain\Budget\TransactionAmount;
 use Domain\Budget\TransactionDate;
 use Infrastructure\Persistence\MemoryTransactionRepository;
@@ -15,7 +15,7 @@ class CreateTransactionHandlerTest extends TestCase
     {
         $command = new AddTransactionCommand(new TransactionAmount(12.95), new TransactionDate(new \DateTime()));
         $transactionRepository = new MemoryTransactionRepository();
-        $commandHandler = new CreateTransactionHandler($transactionRepository);
+        $commandHandler = new AddTransactionHandler($transactionRepository);
 
         $commandHandler->handle($command);
 

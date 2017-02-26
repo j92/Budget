@@ -8,7 +8,7 @@ use Application\Command\CommandHandler;
 use Domain\Budget\Transaction;
 use Domain\Budget\TransactionRepository;
 
-class CreateTransactionHandler implements CommandHandler
+class AddTransactionHandler implements CommandHandler
 {
     /** @var TransactionRepository */
     private $transactionRepository;
