@@ -8,7 +8,6 @@ namespace Domain\Budget;
  *
  * An income is an incoming transaction
  */
-class Income
+class Income extends Transaction
 {
-
 }

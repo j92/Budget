@@ -8,7 +8,7 @@ namespace Domain\Budget;
  *
  * An expense is an outgoing transaction
  */
-class Expense
+class Expense extends Transaction
 {
 
 }
