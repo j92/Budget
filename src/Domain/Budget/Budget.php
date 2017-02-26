@@ -10,6 +10,6 @@ class Budget
     /** @var string */
     public $title;
 
-    /** @var \DatePeriod */
+    /** @var BudgetPeriod */
     public $period;
 }
