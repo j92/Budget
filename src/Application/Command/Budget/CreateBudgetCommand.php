@@ -3,6 +3,7 @@
 namespace Application\Command\Budget;
 
 use Application\Command\Command;
+use Domain\Budget\BudgetPeriod;
 
 class CreateBudgetCommand implements Command
 {
@@ -12,16 +13,16 @@ class CreateBudgetCommand implements Command
     private $title;
 
     /**
-     * @var \DatePeriod
+     * @var BudgetPeriod
      */
     private $period;
 
     /**
      * CreateBudgetCommand constructor.
      * @param string $title
-     * @param \DatePeriod $period
+     * @param BudgetPeriod $period
      */
-    public function __construct($title, \DatePeriod $period)
+    public function __construct($title, BudgetPeriod $period)
     {
         $this->title = $title;
         $this->period = $period;
@@ -30,15 +31,15 @@ class CreateBudgetCommand implements Command
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
     /**
-     * @return \DatePeriod
+     * @return BudgetPeriod
      */
-    public function getPeriod()
+    public function getPeriod(): BudgetPeriod
     {
         return $this->period;
     }

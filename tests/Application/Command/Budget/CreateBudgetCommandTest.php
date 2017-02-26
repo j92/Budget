@@ -3,6 +3,7 @@
 namespace Tests\Application\Command\Budget;
 
 use Application\Command\Budget\CreateBudgetCommand;
+use Domain\Budget\BudgetPeriod;
 use PHPUnit\Framework\TestCase;
 
 class CreateBudgetCommandTest extends TestCase
@@ -10,7 +11,7 @@ class CreateBudgetCommandTest extends TestCase
     public function testGetters()
     {
         $title = 'title';
-        $period = new \DatePeriod(new \DateTime(), new \DateInterval('P1D'), new \DateTime());
+        $period = new BudgetPeriod(new \DateTime('now'), new \DateTime('tomorrow'));
 
         $command = new CreateBudgetCommand($title, $period);
 
