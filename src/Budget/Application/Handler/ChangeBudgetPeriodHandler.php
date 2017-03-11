@@ -15,18 +15,13 @@ final class ChangeBudgetPeriodHandler
     /** @var BudgetRepository */
     private $budgetRepository;
 
-    /** @var EventStore */
-    private $eventStore;
-
     /**
      * ChangeBudgetPeriodHandler constructor.
      * @param BudgetRepository $budgetRepository
-     * @param EventStore $eventStore
      */
-    public function __construct(BudgetRepository $budgetRepository, EventStore $eventStore)
+    public function __construct(BudgetRepository $budgetRepository)
     {
         $this->budgetRepository = $budgetRepository;
-        $this->eventStore = $eventStore;
     }
 
     public function __invoke(ChangeBudgetPeriod $command)
@@ -37,10 +32,8 @@ final class ChangeBudgetPeriodHandler
             throw new \Exception(sprintf('Budget with id %s not found', $command->budgetId));
         }
 
-        $this->eventStore->beginTransaction();
-
         $budget->changePeriod(BudgetPeriod::fromStartEndString($command->start, $command->end));
 
-        $this->eventStore->commit();
+        $this->budgetRepository->add($budget);
     }
 }

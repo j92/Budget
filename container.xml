@@ -60,8 +60,8 @@
             <argument>BudgetTool\Budget\Domain\Model\Budget</argument>
         </service>
 
-        <service id="event_store_budget_collection"
-                 class="BudgetTool\Budget\Infrastructure\Persistence\EventStoreBudgetCollection">
+        <service id="budget_tool.budget.infrastructure.persistence.event_sourced_budget_repository"
+                 class="BudgetTool\Budget\Infrastructure\Persistence\EventSourcedBudgetRepository">
             <argument type="service" id="prooph_event_store" />
             <argument type="service" id="budget_aggregate_type" />
             <argument type="service" id="prooph_aggregate_translator" />
@@ -71,11 +71,10 @@
         </service>
 
         <service id="budget_tool.budget.application.handler.add_budget_handler" class="BudgetTool\Budget\Application\Handler\AddBudgetHandler">
-            <argument type="service" id="event_store_budget_collection" />
+            <argument type="service" id="budget_tool.budget.infrastructure.persistence.event_sourced_budget_repository" />
         </service>
         <service id="budget_tool.budget.application.handler.change_budget_period_handler" class="BudgetTool\Budget\Application\Handler\ChangeBudgetPeriodHandler">
-            <argument type="service" id="event_store_budget_collection" />
-            <argument type="service" id="prooph_event_store" />
+            <argument type="service" id="budget_tool.budget.infrastructure.persistence.event_sourced_budget_repository" />
         </service>
 
         <service id="prooph.service_bus.plugin.router.command_router" class="Prooph\ServiceBus\Plugin\Router\CommandRouter">

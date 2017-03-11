@@ -7,7 +7,7 @@ use BudgetTool\Budget\Domain\Model\BudgetRepository;
 use BudgetTool\Budget\Domain\ValueObject\BudgetId;
 use Prooph\EventStore\Aggregate\AggregateRepository;
 
-class EventStoreBudgetCollection extends AggregateRepository implements BudgetRepository
+class EventSourcedBudgetRepository extends AggregateRepository implements BudgetRepository
 {
     /**
      * @param Budget $budget
