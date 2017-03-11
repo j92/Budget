@@ -10,6 +10,12 @@
     "phpunit/phpunit": "^6.0"
   },
   "require": {
-
+    "prooph/event-sourcing": "~4.0",
+    "prooph/event-store": "^6.5",
+    "symfony/console": "^3.2",
+    "prooph/service-bus": "~5",
+    "prooph/event-store-doctrine-adapter": "^3.3",
+    "symfony/dependency-injection": "^3.2",
+    "symfony/config": "^3.2"
   }
 }

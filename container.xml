@@ -1,0 +1,110 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="verbosity_Level_map" type="collection">
+            <parameter key="Symfony\Component\Console\Output\OutputInterface::VERBOSITY_NORMAL">Monolog\Logger::NOTICE</parameter>
+            <parameter key="Symfony\Component\Console\Output\OutputInterface::VERBOSITY_VERBOSE">Monolog\Logger::INFO</parameter>
+            <parameter key="Symfony\Component\Console\Output\OutputInterface::VERBOSITY_VERY_VERBOSE">Monolog\Logger::DEBUG</parameter>
+            <parameter key="Symfony\Component\Console\Output\OutputInterface::VERBOSITY_DEBUG">Monolog\Logger::DEBUG</parameter>
+        </parameter>
+        <parameter key="connection.mysql" type="collection">
+            <parameter key="driver">pdo_mysql</parameter>
+            <parameter key="dbname">budget_tool_event_sourced</parameter>
+            <parameter key="user">root</parameter>
+            <parameter key="password">root</parameter>
+            <parameter key="host">127.0.0.1</parameter>
+        </parameter>
+    </parameters>
+    <services>
+        <service id="doctrine_mysql_connection"
+                 class="Doctrine\DBAL\Connection">
+            <factory class="Doctrine\DBAL\DriverManager" method="getConnection" />
+            <argument>%connection.mysql%</argument>
+        </service>
+        <service id="prooph_fqcn_message_factory"
+                 class="Prooph\Common\Messaging\FQCNMessageFactory">
+        </service>
+        <service id="prooph_noop_message_converter"
+                 class="Prooph\Common\Messaging\NoOpMessageConverter">
+        </service>
+        <service id="prooph_json_payload_serializer"
+                 class="Prooph\EventStore\Adapter\PayloadSerializer\JsonPayloadSerializer">
+        </service>
+        <service id="prooph_action_event_emitter"
+                 class="Prooph\Common\Event\ProophActionEventEmitter">
+        </service>
+        <service id="prooph_aggregate_translator"
+                 class="Prooph\EventSourcing\EventStoreIntegration\AggregateTranslator">
+        </service>
+        <service id="prooph_budget_stream_name"
+                 class="Prooph\EventStore\Stream\StreamName">
+            <argument>budget_events_stream</argument>
+        </service>
+        <service id="prooph_event_store_doctrine_adapter"
+                 class="Prooph\EventStore\Adapter\Doctrine\DoctrineEventStoreAdapter">
+            <argument type="service" id="doctrine_mysql_connection"/>
+            <argument type="service" id="prooph_fqcn_message_factory" />
+            <argument type="service" id="prooph_noop_message_converter" />
+            <argument type="service" id="prooph_json_payload_serializer" />
+        </service>
+        <service id="prooph_event_store" class="Prooph\EventStore\EventStore">
+            <argument type="service" id="prooph_event_store_doctrine_adapter"/>
+            <argument type="service" id="prooph_action_event_emitter"/>
+        </service>
+
+        <service id="budget_aggregate_type"
+                 class="Prooph\EventStore\Aggregate\AggregateType">
+            <factory class="Prooph\EventStore\Aggregate\AggregateType" method="fromAggregateRootClass" />
+            <argument>BudgetTool\Budget\Domain\Model\Budget</argument>
+        </service>
+
+        <service id="event_store_budget_collection"
+                 class="BudgetTool\Budget\Infrastructure\Persistence\EventStoreBudgetCollection">
+            <argument type="service" id="prooph_event_store" />
+            <argument type="service" id="budget_aggregate_type" />
+            <argument type="service" id="prooph_aggregate_translator" />
+            <argument>null</argument>
+            <argument type="service" id="prooph_budget_stream_name" />
+            <argument>false</argument>
+        </service>
+
+        <service id="budget_tool.budget.application.handler.add_budget_handler" class="BudgetTool\Budget\Application\Handler\AddBudgetHandler">
+            <argument type="service" id="event_store_budget_collection" />
+        </service>
+        <service id="budget_tool.budget.application.handler.change_budget_period_handler" class="BudgetTool\Budget\Application\Handler\ChangeBudgetPeriodHandler">
+            <argument type="service" id="event_store_budget_collection" />
+            <argument type="service" id="prooph_event_store" />
+        </service>
+
+        <service id="prooph.service_bus.plugin.router.command_router" class="Prooph\ServiceBus\Plugin\Router\CommandRouter">
+            <call method="route">
+                <argument>BudgetTool\Budget\Application\Command\AddBudget</argument>
+            </call>
+            <call method="to">
+                <argument type="service" id="budget_tool.budget.application.handler.add_budget_handler"/>
+            </call>
+            <call method="route">
+                <argument>BudgetTool\Budget\Application\Command\ChangeBudgetPeriod</argument>
+            </call>
+            <call method="to">
+                <argument type="service" id="budget_tool.budget.application.handler.change_budget_period_handler"/>
+            </call>
+        </service>
+        <service id="prooph.service_bus.command_bus" class="Prooph\ServiceBus\CommandBus">
+            <call method="utilize">
+                <argument type="service" id="prooph.service_bus.plugin.router.command_router"/>
+            </call>
+        </service>
+
+        <service id="budget_tool.budget.infrastructure.console.command.add_budget_command" class="BudgetTool\Budget\Infrastructure\Console\Command\AddBudgetCommand">
+            <argument type="service" id="prooph.service_bus.command_bus" />
+        </service>
+
+        <service id="budget_tool.budget.infrastructure.console.command.change_budget_period_command" class="BudgetTool\Budget\Infrastructure\Console\Command\ChangeBudgetPeriodCommand">
+            <argument type="service" id="prooph.service_bus.command_bus" />
+        </service>
+    </services>
+</container>
+
