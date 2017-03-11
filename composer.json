@@ -2,16 +2,14 @@
   "name": "j92/budgettool",
   "autoload": {
     "psr-4": {
-      "BudgetTool\\": "src/"
+      "BudgetTool\\Budget\\": "src/Budget/",
+      "BudgetTool\\User\\": "src/User/"
     }
   },
   "require-dev": {
     "phpunit/phpunit": "^6.0"
   },
   "require": {
-    "symfony/event-dispatcher": "^3.2",
-    "ramsey/uuid": "^3.5",
-    "symfony/console": "^3.2",
-    "prooph/service-bus": "^6.0"
+
   }
 }
