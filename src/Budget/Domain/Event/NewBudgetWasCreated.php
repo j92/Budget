@@ -8,7 +8,7 @@ use BudgetTool\Budget\Domain\ValueObject\BudgetId;
 use BudgetTool\Budget\Domain\ValueObject\BudgetPeriod;
 use Prooph\EventSourcing\AggregateChanged;
 
-class NewBudgetWasCreated extends AggregateChanged
+final class NewBudgetWasCreated extends AggregateChanged
 {
     /** @var BudgetPeriod */
     private $budgetPeriod;

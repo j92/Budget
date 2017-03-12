@@ -16,5 +16,7 @@ $loader->load('container.xml');
 $application = new Application();
 $application->add($container->get('budget_tool.budget.infrastructure.console.command.add_budget_command'));
 $application->add($container->get('budget_tool.budget.infrastructure.console.command.change_budget_period_command'));
+$application->add($container->get('budget_tool.budget.infrastructure.console.command.add_transaction_to_budget_command'));
+$application->add($container->get('budget_tool.budget.infrastructure.console.command.replay_budget_events'));
 
 $application->run();

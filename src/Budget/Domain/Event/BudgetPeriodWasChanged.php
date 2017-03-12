@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BudgetTool\Budget\Domain\Event;
 
 use BudgetTool\Budget\Domain\ValueObject\BudgetId;
 use BudgetTool\Budget\Domain\ValueObject\BudgetPeriod;
 use Prooph\EventSourcing\AggregateChanged;
 
-class BudgetPeriodWasChanged extends AggregateChanged
+final class BudgetPeriodWasChanged extends AggregateChanged
 {
     /** @var BudgetId */
     private $budgetId;

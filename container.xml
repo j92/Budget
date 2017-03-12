@@ -16,12 +16,24 @@
             <parameter key="password">root</parameter>
             <parameter key="host">127.0.0.1</parameter>
         </parameter>
+        <parameter key="doctrine.dbal.budget" type="collection">
+            <parameter key="driver">pdo_mysql</parameter>
+            <parameter key="dbname">budget</parameter>
+            <parameter key="user">root</parameter>
+            <parameter key="password">root</parameter>
+            <parameter key="host">127.0.0.1</parameter>
+        </parameter>
     </parameters>
     <services>
         <service id="doctrine_mysql_connection"
                  class="Doctrine\DBAL\Connection">
             <factory class="Doctrine\DBAL\DriverManager" method="getConnection" />
             <argument>%connection.mysql%</argument>
+        </service>
+        <service id="doctrine.dbal.budget"
+                 class="Doctrine\DBAL\Connection">
+            <factory class="Doctrine\DBAL\DriverManager" method="getConnection" />
+            <argument>%doctrine.dbal.budget%</argument>
         </service>
         <service id="prooph_fqcn_message_factory"
                  class="Prooph\Common\Messaging\FQCNMessageFactory">
@@ -76,6 +88,9 @@
         <service id="budget_tool.budget.application.handler.change_budget_period_handler" class="BudgetTool\Budget\Application\Handler\ChangeBudgetPeriodHandler">
             <argument type="service" id="budget_tool.budget.infrastructure.persistence.event_sourced_budget_repository" />
         </service>
+        <service id="budget_tool.budget.application.handler.add_transaction_to_budget_handler" class="BudgetTool\Budget\Application\Handler\AddTransactionToBudgetHandler">
+            <argument type="service" id="budget_tool.budget.infrastructure.persistence.event_sourced_budget_repository" />
+        </service>
 
         <service id="prooph.service_bus.plugin.router.command_router" class="Prooph\ServiceBus\Plugin\Router\CommandRouter">
             <call method="route">
@@ -90,11 +105,46 @@
             <call method="to">
                 <argument type="service" id="budget_tool.budget.application.handler.change_budget_period_handler"/>
             </call>
+            <call method="route">
+                <argument>BudgetTool\Budget\Application\Command\AddTransactionToBudget</argument>
+            </call>
+            <call method="to">
+                <argument type="service" id="budget_tool.budget.application.handler.add_transaction_to_budget_handler"/>
+            </call>
         </service>
         <service id="prooph.service_bus.command_bus" class="Prooph\ServiceBus\CommandBus">
             <call method="utilize">
                 <argument type="service" id="prooph.service_bus.plugin.router.command_router"/>
             </call>
+        </service>
+        <service id="budget_tool.budget.infrastructure.projection.budget_projector" class="BudgetTool\Budget\Infrastructure\Projection\BudgetProjector">
+            <argument type="service" id="doctrine.dbal.budget" />
+        </service>
+        <service id="prooph.service_bus.plugin.invoke_strategy.on_event_strategy" class="Prooph\ServiceBus\Plugin\InvokeStrategy\OnEventStrategy" />
+        <service id="prooph.service_bus.plugin.router.event_router" class="Prooph\ServiceBus\Plugin\Router\EventRouter">
+            <call method="route">
+                <argument>BudgetTool\Budget\Domain\Event\NewBudgetWasCreated</argument>
+            </call>
+            <call method="to">
+                <argument type="service" id="budget_tool.budget.infrastructure.projection.budget_projector" />
+            </call>
+            <call method="route">
+                <argument>BudgetTool\Budget\Domain\Event\BudgetPeriodWasChanged</argument>
+            </call>
+            <call method="to">
+                <argument type="service" id="budget_tool.budget.infrastructure.projection.budget_projector" />
+            </call>
+        </service>
+        <service id="prooph.service_bus.event_bus" class="Prooph\ServiceBus\EventBus">
+            <call method="utilize">
+                <argument type="service" id="prooph.service_bus.plugin.router.event_router"/>
+            </call>
+            <call method="utilize">
+                <argument type="service" id="prooph.service_bus.plugin.invoke_strategy.on_event_strategy"/>
+            </call>
+        </service>
+        <service id="prooph.event_store_bus_bridge.event_publisher" class="Prooph\EventStoreBusBridge\EventPublisher">
+            <argument type="service" id="prooph.service_bus.event_bus" />
         </service>
 
         <service id="budget_tool.budget.infrastructure.console.command.add_budget_command" class="BudgetTool\Budget\Infrastructure\Console\Command\AddBudgetCommand">
@@ -103,6 +153,16 @@
 
         <service id="budget_tool.budget.infrastructure.console.command.change_budget_period_command" class="BudgetTool\Budget\Infrastructure\Console\Command\ChangeBudgetPeriodCommand">
             <argument type="service" id="prooph.service_bus.command_bus" />
+        </service>
+
+        <service id="budget_tool.budget.infrastructure.console.command.add_transaction_to_budget_command" class="BudgetTool\Budget\Infrastructure\Console\Command\AddTransactionToBudgetCommand">
+            <argument type="service" id="prooph.service_bus.command_bus" />
+        </service>
+
+        <service id="budget_tool.budget.infrastructure.console.command.replay_budget_events" class="BudgetTool\Budget\Infrastructure\Console\Command\ReplayBudgetEvents">
+            <argument type="service" id="prooph.service_bus.command_bus" />
+            <argument type="service" id="prooph_event_store" />
+            <argument type="service" id="prooph.service_bus.event_bus" />
         </service>
     </services>
 </container>

@@ -39,6 +39,16 @@ final class BudgetPeriod
         $period->end = $end;
     }
 
+    public function getStart(): \DateTime
+    {
+        return $this->start;
+    }
+
+    public function getEnd(): \DateTime
+    {
+        return $this->end;
+    }
+
     public function toString(): string
     {
         return $this->start->format(\DateTime::ISO8601) .'|'. $this->end->format(\DateTime::ISO8601);

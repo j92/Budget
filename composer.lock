@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c4bb76b1980edb271151aea5cf4fedbe",
-    "content-hash": "a033a91279c336ceb2da6457acda26e0",
+    "hash": "e58066df49290fb10c53c42d60beae26",
+    "content-hash": "5e927186db58f7e862789cb9c7295457",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -531,6 +531,146 @@
                 "parser"
             ],
             "time": "2014-09-09 13:34:57"
+        },
+        {
+            "name": "marc-mabe/php-enum",
+            "version": "v2.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marc-mabe/php-enum.git",
+                "reference": "09f0163a6e040d5e9de9271fd6cfdefb12e3e498"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marc-mabe/php-enum/zipball/09f0163a6e040d5e9de9271fd6cfdefb12e3e498",
+                "reference": "09f0163a6e040d5e9de9271fd6cfdefb12e3e498",
+                "shasum": ""
+            },
+            "require": {
+                "ext-reflection": "*",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "suggest": {
+                "php": "PHP>=5.4 will be required for using trait EnumSerializableTrait"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev",
+                    "dev-1.x": "1.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MabeEnum\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Marc Bennewitz",
+                    "email": "dev@mabe.berlin",
+                    "homepage": "http://mabe.berlin/",
+                    "role": "Lead"
+                }
+            ],
+            "description": "Simple and fast implementation of enumerations with native PHP 5.3 and upper",
+            "homepage": "https://github.com/marc-mabe/php-enum",
+            "keywords": [
+                "enum",
+                "enum-map",
+                "enum-set",
+                "enumeration",
+                "enummap",
+                "enumset",
+                "type-hint",
+                "typehint"
+            ],
+            "time": "2016-12-21 13:13:11"
+        },
+        {
+            "name": "moneyphp/money",
+            "version": "v3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moneyphp/money.git",
+                "reference": "fd1c642915a9c3613b8a64ede49dd37d84da82cc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moneyphp/money/zipball/fd1c642915a9c3613b8a64ede49dd37d84da82cc",
+                "reference": "fd1c642915a9c3613b8a64ede49dd37d84da82cc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "cache/taggable-cache": "^0.4.0",
+                "ext-bcmath": "*",
+                "ext-gmp": "*",
+                "ext-intl": "*",
+                "florianv/swap": "^3.0",
+                "henrikbjorn/phpspec-code-coverage": "^2.0.2",
+                "moneyphp/iso-currencies": "^1.0",
+                "php-http/message": "^1.4",
+                "php-http/mock-client": "^0.3.3",
+                "phpspec/phpspec": "^2.5",
+                "phpunit/phpunit": "^4.5",
+                "psr/cache": "^1.0",
+                "sllh/php-cs-fixer-styleci-bridge": "^2.1"
+            },
+            "suggest": {
+                "ext-bcmath": "Calculate without integer limits",
+                "ext-gmp": "Calculate without integer limits",
+                "ext-intl": "Format Money objects with intl",
+                "florianv/swap": "Exchange rates library for PHP",
+                "psr/cache-implementation": "Used for Currency caching"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Money\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathias Verraes",
+                    "email": "mathias@verraes.net",
+                    "homepage": "http://verraes.net"
+                },
+                {
+                    "name": "Frederik Bosch",
+                    "email": "f.bosch@genkgo.nl"
+                },
+                {
+                    "name": "Márk Sági-Kazár",
+                    "email": "mark.sagi-kazar@gmail.com"
+                }
+            ],
+            "description": "PHP implementation of Fowler's Money pattern",
+            "homepage": "http://verraes.net/2011/04/fowler-money-pattern-in-php/",
+            "keywords": [
+                "Value Object",
+                "money",
+                "vo"
+            ],
+            "time": "2017-03-11 11:18:38"
         },
         {
             "name": "paragonie/random_compat",

@@ -16,6 +16,8 @@
     "prooph/service-bus": "~5",
     "prooph/event-store-doctrine-adapter": "^3.3",
     "symfony/dependency-injection": "^3.2",
-    "symfony/config": "^3.2"
+    "symfony/config": "^3.2",
+    "moneyphp/money": "^3.0",
+    "marc-mabe/php-enum": "^2.3"
   }
 }
