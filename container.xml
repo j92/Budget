@@ -134,6 +134,12 @@
             <call method="to">
                 <argument type="service" id="budget_tool.budget.infrastructure.projection.budget_projector" />
             </call>
+            <call method="route">
+                <argument>BudgetTool\Budget\Domain\Event\TransactionWasAddedToBudget</argument>
+            </call>
+            <call method="to">
+                <argument type="service" id="budget_tool.budget.infrastructure.projection.budget_projector" />
+            </call>
         </service>
         <service id="prooph.service_bus.event_bus" class="Prooph\ServiceBus\EventBus">
             <call method="utilize">

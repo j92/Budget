@@ -30,6 +30,14 @@ final class TransactionAmount
         return $instance;
     }
 
+    /**
+     * @return string
+     */
+    public function amount(): string
+    {
+        return $this->amount->getAmount();
+    }
+
     public function toString()
     {
         return json_encode($this->amount);
